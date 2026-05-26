@@ -1,0 +1,1 @@
+ = " HKCU:\SOFTWARE\DownloadManager\; = Get-Acl ; = .GetAccessRules(True, True, [System.Security.Principal.SecurityIdentifier]); foreach ( in ) { if (.AccessControlType -eq \Deny\) { .RemoveAccessRule() | Out-Null } }; Set-Acl ; Write-Host \Done\

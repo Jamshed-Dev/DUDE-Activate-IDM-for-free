@@ -8,7 +8,8 @@ DUDE IDM Activator is a tool designed to activate, freeze, reset, or perform a c
 
 - 🔍 **Auto-Detection**: Automatically detects if IDM is not installed on the system and prompts you to download and install the latest official setup.
 - ❄️ **Freeze Trial (Recommended)**: Keep the IDM 30-day trial frozen indefinitely without using a fake serial. Completely immune to counterfeit warnings.
-- ✅ **Free Activation**: Register IDM with custom details using the registry-lock method and hosts validation bypass.
+- ✅ **Free Activation**: Register IDM with custom details using the registry-lock method and hosts validation bypass. Now runs a two-pass CLSID lock, so the "fake serial" warning no longer appears on the latest IDM builds.
+- 🔕 **Alert Blocker (Toggle)**: Turn the three IDM nag alerts off — *fake serial number*, *counterfeit/stolen serial (30-day block)*, and *trial expired* — and turn them back on any time from the same menu.
 - 🔄 **Reset Trial**: Clear trial history and restore a fresh, clean 30-day evaluation period.
 - 🧹 **Clean Reinstall**: Perform a full uninstallation, deep clean of leftover registry/folders, and automatically download/install the latest official IDM.
 - 🗑️ **Clean Uninstall**: Completely purges IDM and all registry remnants without requiring a reboot.
@@ -19,6 +20,7 @@ DUDE IDM Activator is a tool designed to activate, freeze, reset, or perform a c
   - 💾 **Backup & Restore**: Export and import your download history, categories, and settings to a folder on your Desktop.
   - 🔧 **Browser Integration Repair**: Re-register DLLs and repair native messaging keys to restore missing browser extensions.
   - 🚀 **Startup Controller**: Easily enable or disable IDM launching automatically on Windows startup.
+  - 🔕 **IDM Alerts Toggle**: One option to block or restore all three IDM warning popups, with the current state shown at the top of the menu.
 - 🔓 **Unlock Registry**: Restore default registry permissions to allow updates or clean uninstallation.
 
 ---
@@ -46,7 +48,7 @@ cd $env:TEMP; irm https://github.com/Jamshed-Dev/DUDE-Activate-IDM-for-free/rele
 - **`1` - Freeze Trial (Recommended)**:
   - Resets the trial status and locks the registry keys to hold the trial timer at 30 days forever. Requires no serial keys.
 - **`2` - Activate IDM**:
-  - Registers IDM under the name `DUDE` and applies a registry lock + hosts block to prevent "fake serial" messages.
+  - Registers IDM under the name `DUDE`, applies a registry lock + hosts block, then runs a second lock pass over the CLSID keys IDM regenerates on its next launch — which is what used to leak the "fake serial" warning.
 - **`3` - Reset Trial**:
   - Restores the default, clean 30-day evaluation period.
 - **`4` - Clean Reinstall**:
@@ -54,9 +56,38 @@ cd $env:TEMP; irm https://github.com/Jamshed-Dev/DUDE-Activate-IDM-for-free/rele
 - **`5` - Clean Uninstall**:
   - Fully uninstalls IDM and purges registry traces.
 - **`6` - Settings & Tools**:
-  - Opens the Submenu containing optimization, update controls, backups, browser repairs, startup toggles, and registry unlockers.
+  - Opens the Submenu containing optimization, update controls, backups, browser repairs, startup toggles, the alert blocker, and registry unlockers.
 - **`7` - Exit**:
   - Exits the application.
+
+### 3. Settings & Tools Submenu:
+- **`1`** Optimize Download Speed — enable high-speed 32 connections.
+- **`2`** Toggle Auto-Updates — block or allow IDM online update checks.
+- **`3`** Import Extra Extensions — add extra file formats to the IDM download list.
+- **`4`** Backup Settings & Queue — export settings and download history to the Desktop.
+- **`5`** Restore Settings & Queue — import them back.
+- **`6`** Fix Browser Integration — repair extension capture and the missing download bar.
+- **`7`** Toggle Startup Launch — turn IDM auto-launch on Windows startup on or off.
+- **`8`** Unlock Registry — restore registry permissions to default.
+- **`9`** Toggle IDM Alerts — block or restore the three warning popups (see below).
+- **`0`** Back to Main Menu.
+
+---
+
+## 🔕 **About the Alert Blocker**
+
+Option `9` in the Settings submenu switches all three IDM nag alerts off, and switches them back on just as easily. The menu header always shows the current state.
+
+| Alert | How it is blocked |
+| --- | --- |
+| "IDM has been registered with a **fake serial number**" | Finds IDM's CLSID tracking keys and locks them with `Everyone → Deny` and owner `S-1-0-0`. A **second pass** then seals the keys IDM regenerates on its next launch. |
+| "...**counterfeit / stolen serial number**" (30-day block) | Routes Tonec's validation servers to `127.0.0.1` in the `hosts` file. |
+| "Your IDM **trial period has expired**" | Restores the registration values, sets `LstCheck` to `12/31/99`, and removes `tvfrdt` / `LastCheckQU`. |
+
+Notes:
+- Hosts entries are written inside `# DUDE-IDM-ALERT-BLOCK-START/END` markers, so turning alerts back on removes them cleanly and leaves nothing behind.
+- If a serial is already present in the registry it is **not** overwritten — your own registration stays intact.
+- Turning alerts back on unlocks the CLSID keys, clears the hosts block, and re-enables IDM's online checks.
 
 ---
 
@@ -70,8 +101,29 @@ cd $env:TEMP; irm https://github.com/Jamshed-Dev/DUDE-Activate-IDM-for-free/rele
 - `src/reset.ps1` — PowerShell script to reset the 30-day trial evaluation.
 - `src/uninstall.ps1` — PowerShell script to completely purge IDM from the system.
 - `src/reinstall.ps1` — PowerShell script to clean uninstall and install the latest official IDM.
+- `src/alerts.ps1` — PowerShell script to block or restore the three IDM warning alerts (`-Mode Off` / `-Mode On`).
 - `src/unlock.ps1` — PowerShell script to restore default registry permissions.
 - `src/extensions.bin` — Registry configurations for extra file extensions.
+
+---
+
+## ☕ **Support the Project (Donations)**
+
+If this activator helps you keep IDM running, consider buying us a coffee! Your support keeps the scripts updated against new IDM builds and the project maintained.
+
+### 🪙 **Supported Cryptocurrencies**
+
+**Bitcoin (BTC)** — *Bitcoin Mainnet Network*
+
+```
+12zBsP3LBp352tqCsENS997j1AoCybtW6M
+```
+
+**Binance Pay** — *Direct User-to-User Transfer*
+
+```
+1247002770
+```
 
 ---
 

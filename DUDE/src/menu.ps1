@@ -35,7 +35,7 @@ do {
     
     Write-Host "  [2] " -NoNewline -ForegroundColor White
     Write-Host "Activate IDM" -NoNewline -ForegroundColor Green
-    Write-Host "  - Permanent Registry Lock (May show fake serial warning on latest IDM)" -ForegroundColor Gray
+    Write-Host "  - Permanent Registry Lock + all fake serial / trial alerts blocked" -ForegroundColor Gray
     
     Write-Host "  [3] " -NoNewline -ForegroundColor White
     Write-Host "Reset Trial" -NoNewline -ForegroundColor Green

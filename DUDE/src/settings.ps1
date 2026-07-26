@@ -5,6 +5,7 @@ $ErrorActionPreference = "Stop"
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $regPath = "HKCU:\SOFTWARE\DownloadManager"
+$statePath = "HKCU:\SOFTWARE\DUDE_IDM"
 
 # Check if IDM is installed and get path
 $idmExe = ""
@@ -39,14 +40,20 @@ do {
     $maxMCVal = 0
     $lstCheckVal = ""
     $startupVal = 0
-    
+    $alertsBlocked = 0
+
     if (Test-Path $regPath) {
         $props = Get-ItemProperty -Path $regPath -ErrorAction SilentlyContinue
         if ($props.maxMC -ne $null) { $maxMCVal = $props.maxMC }
         if ($props.LstCheck -ne $null) { $lstCheckVal = $props.LstCheck }
         if ($props.LaunchOnStart -ne $null) { $startupVal = $props.LaunchOnStart }
     }
-    
+
+    if (Test-Path $statePath) {
+        $stateProps = Get-ItemProperty -Path $statePath -ErrorAction SilentlyContinue
+        if ($stateProps.AlertsBlocked -ne $null) { $alertsBlocked = $stateProps.AlertsBlocked }
+    }
+
     # Display speed state
     $speedState = "Default (8 connections)"
     if ($maxMCVal -eq 1532) {
@@ -74,6 +81,12 @@ do {
     Write-Host $updatesState -ForegroundColor Green
     Write-Host "  - Launch on Startup    : " -NoNewline -ForegroundColor Gray
     Write-Host $startupState -ForegroundColor Green
+    Write-Host "  - IDM Alerts           : " -NoNewline -ForegroundColor Gray
+    if ($alertsBlocked -eq 1) {
+        Write-Host "OFF (fake serial / counterfeit / trial blocked)" -ForegroundColor Green
+    } else {
+        Write-Host "ON (default - alerts may appear)" -ForegroundColor Yellow
+    }
     Write-Host ""
     Write-Host "  -------------------------------------------------------------" -ForegroundColor Cyan
     Write-Host ""
@@ -110,13 +123,22 @@ do {
     Write-Host "Unlock Registry" -NoNewline -ForegroundColor Green
     Write-Host "         - Restore registry permissions to default" -ForegroundColor Gray
     
-    Write-Host ""
     Write-Host "  [9] " -NoNewline -ForegroundColor White
+    if ($alertsBlocked -eq 1) {
+        Write-Host "Turn IDM Alerts ON" -NoNewline -ForegroundColor Green
+        Write-Host "      - Restore fake serial / counterfeit / trial alerts" -ForegroundColor Gray
+    } else {
+        Write-Host "Turn IDM Alerts OFF" -NoNewline -ForegroundColor Green
+        Write-Host "     - Stop fake serial / counterfeit / trial alerts" -ForegroundColor Gray
+    }
+
+    Write-Host ""
+    Write-Host "  [0] " -NoNewline -ForegroundColor White
     Write-Host "Back to Main Menu" -ForegroundColor Red
     Write-Host ""
     Write-Host "  -------------------------------------------------------------" -ForegroundColor Cyan
-    
-    $choice = Read-Host "  Enter choice [1-9]"
+
+    $choice = Read-Host "  Enter choice [0-9]"
     
     switch ($choice) {
         "1" {
@@ -320,11 +342,27 @@ do {
             Read-Host "  Press Enter to return to the menu..."
         }
         "9" {
+            Clear-Host
+            Write-Host ""
+            if ($alertsBlocked -eq 1) {
+                & "$PSScriptRoot\alerts.ps1" -Mode On
+            } else {
+                Write-Host "  [!] This will block these three IDM alerts permanently:" -ForegroundColor Yellow
+                Write-Host "      1. Registered with a fake serial number" -ForegroundColor Gray
+                Write-Host "      2. Counterfeit / stolen serial (30 day block)" -ForegroundColor Gray
+                Write-Host "      3. Trial period has expired" -ForegroundColor Gray
+                Write-Host ""
+                & "$PSScriptRoot\alerts.ps1" -Mode Off
+            }
+            Write-Host ""
+            Read-Host "  Press Enter to return..."
+        }
+        "0" {
             $exitSubmenu = $true
         }
         default {
             Write-Host ""
-            Write-Host "  [ERROR] Invalid choice! Please select an option between 1 and 9." -ForegroundColor Red
+            Write-Host "  [ERROR] Invalid choice! Please select an option between 0 and 9." -ForegroundColor Red
             Start-Sleep -Seconds 2
         }
     }

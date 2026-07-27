@@ -13,14 +13,14 @@ if (-not $isAdmin) {
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 # Set Console Title
-$host.UI.RawUI.WindowTitle = "DUDE IDM Activator v2.0"
+$host.UI.RawUI.WindowTitle = "DUDE IDM Activator v3.0"
 
 # Main loop
 do {
     Clear-Host
     Write-Host ""
     Write-Host "  +-----------------------------------------------------------+" -ForegroundColor Cyan
-    Write-Host "  |                DUDE IDM ACTIVATOR v2.0 (2026)             |" -ForegroundColor Green
+    Write-Host "  |                DUDE IDM ACTIVATOR v3.0 (2026)             |" -ForegroundColor Green
     Write-Host "  +-----------------------------------------------------------+" -ForegroundColor Cyan
     Write-Host ""
     Write-Host "     =========================================" -ForegroundColor Cyan

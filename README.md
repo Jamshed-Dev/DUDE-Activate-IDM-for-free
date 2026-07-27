@@ -37,7 +37,11 @@ DUDE IDM Activator is a tool designed to activate, freeze, reset, or perform a c
 ### **Quick Run (Online via PowerShell)**
 Open PowerShell as Administrator and paste the following command to download, extract, and launch the tool automatically:
 ```powershell
+<<<<<<< HEAD
 cd $env:TEMP; irm https://github.com/Jamshed-Dev/DUDE-Activate-IDM-for-free/releases/download/IDM/DUDEv3.zip -OutFile DUDEv3.zip; Expand-Archive DUDEv3.zip -DestinationPath . -Force; Remove-Item DUDEv3.zip -Force; cmd.exe /c .\DUDE\script.bat
+=======
+cd $env:TEMP; irm https://github.com/Jamshed-Dev/DUDE-Activate-IDM-for-free/releases/download/DUDEv3/DUDEv3.zip -OutFile DUDEv3.zip; Expand-Archive DUDEv3.zip -DestinationPath . -Force; Remove-Item DUDEv3.zip -Force; cmd.exe /c .\DUDE\script.bat
+>>>>>>> 5e8d98bc43c2f7357d5dcb487604447bd6584d8b
 ```
 
 ### 1. Run the Script Locally:
